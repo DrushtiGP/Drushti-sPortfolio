@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 5</title>
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Business Case 4 Start -->
+<div class="business-case">
+  <h3 class="case-title">Inventory Management</h3>
+
+  <div class="case-subsection">
+    <h4>Problem Statement :</h4>
+    <p>
+      During large-scale sales events like <strong>Amazon Prime Day</strong>, millions of items experience volatile demand patterns. Managing inventory in real time is crucial to avoid stockouts (losing sales) or surpluses (tying up capital). 
+      Amazon must accurately forecast product consumption, detect anomalies, and act quickly.
+    </p>
+    <p>
+      The core challenge is maintaining scalable, real-time inventory trend analysis and predicting future demand with minimal lag. 
+      This requires efficient algorithms that can track sales spikes or dips over sliding windows of time.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Significance :</h4>
+    <p>
+      Real-time forecasting enables Amazon to:
+      <ul>
+        <li><strong>Prevent stockouts:</strong> Ensure popular products are always available</li>
+        <li><strong>Optimize restocking:</strong> Avoid overstocking low-demand items</li>
+        <li><strong>Improve warehouse logistics:</strong> Pre-position inventory near high-demand zones</li>
+      </ul>
+      These capabilities reduce costs, boost customer satisfaction, and enable faster delivery, especially during high-traffic events.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Data Structures and Algorithms Used for Forecasting</h4>
+    <p class="intro-text">
+      Amazon uses a combination of <strong>sliding windows</strong>, <strong>hash maps</strong>, and <strong>min-heaps</strong> to analyze recent sales activity and forecast trends in near real-time.
+    </p>
+
+<div class="card">
+  <h3>1. Sliding Window (Time-Series Analysis)</h3>
+  <p>
+    In fast-paced e-commerce systems like Amazon, inventory and sales data change every second — especially during events like Prime Day or lightning deals. 
+    To make timely decisions, the system doesn’t need the entire sales history. Instead, it focuses on the **most recent window of time** — like the last 5 minutes or last 100 transactions. 
+    This is where the <strong>sliding window</strong> technique becomes crucial.
+  </p>
+  <br>
+   <p>
+    The sliding window technique processes data in real-time by maintaining a fixed-size view over a continuously updating stream of inventory or sales events. 
+    Instead of keeping all historical records, it retains only the most recent and relevant time-bound entries — such as the last 5 minutes of product sales — and discards outdated information as new data flows in.
+  </p>
+  <ul>
+    <li><strong>Real-Time Aggregation:</strong> Tracks live product movement and demand by continuously updating as new orders are placed.</li>
+    <li><strong>Memory Efficient:</strong> Maintains only a small, recent slice of data (e.g., last 60 seconds), making it suitable for high-volume traffic with limited storage.</li>
+    <li><strong>Trigger-Based:</strong> Automatically detects drops in stock or surges in demand, enabling dynamic decisions like auto-replenishment or flash discounts.</li>
+  </ul>
+    <p><strong>Complexity:</strong></p>
+    <p>Update: O(1) – Add or remove data points efficiently as time advances</p>
+    <p>Window Sum/Average: O(1) – Maintain real-time statistics without recomputing the full window</p>
+    <p>Space: O(W) – Store only the latest W data points (where W is the window size)</p>
+
+    <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/sliding_window.cpp" target="_blank">🔗Sliding Window Demo</a></p>
+
+</div>
+
+    <div class="card">
+  <h3>2. Hash Maps (Product Frequency & State Tracking)</h3>
+  <p>
+    Hash maps provide an efficient way to track the real-time state of millions of products in Amazon’s inventory system. 
+    Each product’s unique ID acts as a key, mapping to a detailed record that includes current stock levels, cumulative sales count, and timestamps of recent updates.
+  </p>
+  <p>
+    This approach enables instant updates and queries, which is critical for handling rapid order placements and dynamic stock changes during high-traffic events like Prime Day.
+  </p>
+  <ul>
+    <li><strong>Constant-Time Updates:</strong> Quickly adjust stock or sales counters as new transactions occur.</li>
+    <li><strong>Multi-Product Scalability:</strong> Supports millions of Stock Keeping Units (SKUs) efficiently without slowing down lookups or updates.</li>
+    <li><strong>Real-Time Integration:</strong> Works seamlessly with backend APIs to provide accurate stock availability to customers and internal systems.</li>
+  </ul>
+  <p><strong>Complexity:</strong></p>
+  <p>Insert/Update: O(1)</p>
+  <p>Lookup: O(1)</p>
+  <p>Space: O(N), where N = total number of products tracked</p>
+</div>
+
+<div class="card">
+  <h3>3. Min-Heap (Top-K Stockouts or Fastest Depleting Items)</h3>
+  <p>
+    Min-heaps serve as a priority queue to efficiently maintain a dynamic list of products that are rapidly running out of stock. 
+    By monitoring the slope or rate of inventory depletion, Amazon identifies which items require urgent restocking or redistribution.
+  </p>
+  <p>
+    This structure keeps the "hottest" SKUs at the top, enabling warehouse managers and automated systems to prioritize resources and avoid stockouts that could lead to lost sales.
+  </p>
+  <ul>
+    <li><strong>Top-K Monitoring:</strong> Continuously track the K products with the fastest declining inventory levels.</li>
+    <li><strong>Priority Queue Behavior:</strong> Automatically promotes critical items as their depletion rates increase.</li>
+    <li><strong>Warehouse Rebalancing:</strong> Facilitates timely movement of stock between locations to optimize availability.</li>
+  </ul>
+  <p><strong>Complexity:</strong></p>
+  <p>Insert: O(log K)</p>
+  <p>Extract Min: O(log K)</p>
+  <p>Space: O(K), where K = number of top items tracked</p>
+</div>
+
+
+  <div class="case-subsection">
+    <h4>Inferences</h4>
+    <p>
+      This system ensures Amazon maintains an always-ready inventory pipeline even during unpredictable demand surges. By leveraging low-latency data structures like hash maps and sliding windows, decisions are automated and fast.
+    </p>
+    <p>
+      Predictive inventory management doesn’t just reduce lost sales — it also enhances delivery speed, customer experience, and reduces warehousing inefficiencies, especially critical during high-impact sales events like Prime Day.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>References</h4>
+    <ul>
+      <li><a href="https://www.geeksforgeeks.org/sliding-window-technique/" target="_blank">Sliding Window — GeeksforGeeks</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Min-heap" target="_blank">Min Heap — Wikipedia</a></li>
+    </ul>
+  </div>
+</div>
+<!-- Business Case 4 End -->
+
+</body>
+</html>

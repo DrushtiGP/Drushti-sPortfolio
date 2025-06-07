@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 1</title>
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+      <div class="business-case">
+    <h3 class="case-title">Spam and Ham Email Detection Using Bloom Filters</h3>
+
+    <div class="case-subsection">
+      <h4> Problem Statement : </h4>
+      <p>In an increasingly connected world, email spam continues to pose risks — from phishing to unwanted content delivery. Conventional filters rely heavily on machine learning, but can we do more with less? What if we design a resource-light, explainable, and high-speed system using pure algorithms?
+        This case study explores a classical, algorithmic approach to detect spam (junk) and ham (valid) emails using:
+        <li>Bloom Filters (probabilistic data structure)</li>
+      </p>
+        
+    </div>
+
+
+    <div class="case-subsection">
+      <h4>Real-world scenario: </h4>
+      <p>Consider a lightweight email client on a budget phone or embedded device where you can’t afford ML inference. 
+        Or, think of enterprises that require privacy (no model training on user data). This is where algorithmic spam detection shines.</p>
+    </div>
+
+    <div class="image-wrapper">
+        <img src="Spam_vs_Ham.jpg" alt="Spam v/s Ham Classifier" class="case-image">
+        <p class="image-caption">Figure 1: Spam vs Ham Email Classification Visualization</p>
+        <p class="image-courtesy">Image courtesy: <a href="https://medium.datadriveninvestor.com/using-natural-language-processing-for-spam-detection-in-emails-281a7c22ddbc" target="_blank">Medium</a></p>
+    </div>
+
+    <div class="case-subsection">
+      <h4>Let's dig more into bloom filter:</h4>
+      <ul>
+        <div class="card">
+          <h3>Bloom Filter in Spam Detection</h3>
+          <p>Bloom filters serve as lightweight, high-speed pre-filters to detect spam emails efficiently. They provide a probabilistic method to test membership of known spam indicators such as:</p>
+          <ul class="styled-list">
+            <li>Suspicious email addresses or domains</li>
+            <li>Common spam keywords and phrases (e.g., “lottery”, “click now”)</li>
+            <li>Blacklisted or malicious URLs</li>
+          </ul>
+        </div>
+        
+        <section class="bloom-filter-section">
+  <h3>🔍 What is a Bloom Filter?</h3>
+  <p>
+    A <strong>Bloom filter</strong> is a space-effiecient data structure that tells whether an element may be in a set or definitely is not. If we look up an item in the Bloom filter , we can get two possible results.
+    <ul>
+      <li>The item is not present in the set : True negetaive</li>
+      <li>The item might be present in the set : Can be either a False positive or True positive.</li>
+    </ul>
+  </p>
+  <p>
+    This structure is highly space-efficient and enables ultra-fast lookups, making it ideal for 
+    applications like spam detection where slight false positives are acceptable, but false negatives are not.
+  </p>
+
+  <h3>Working of bloom filter:</h3>
+  <p>Bloom filters use a clever combination of a bit array and multiple hash functions to efficiently check 
+    whether an element is possibly in a set or definitely not in it.</p>
+  <p><strong>To insert an item:</strong></p>
+    <ul class="steps-list">
+      <li>Hash the item with <em>k</em> functions.</li>
+      <li>Set bits at resulting indices to 1.</li>
+    </ul>
+
+<div class="image-wrapper">
+  <img src="insertion_Bloom.png" alt="Insertion in bloom filter" class="case-image" />
+  <p class="image-caption">Figure 2: Insertion in Bloom filter</p>
+  <p class="image-courtesy">
+    Image courtesy: 
+    <a href="https://www.enjoyalgorithms.com/blog/bloom-filter" target="_blank" rel="noopener noreferrer">
+      enjoyalgorithms
+    </a>
+  </p>
+</div>
+
+
+<p><strong>To check membership:</strong></p>
+    <ul class="steps-list">
+      <li>Rehash the item.</li>
+      <li>If all corresponding bits are  1: <em>Item may exist</em>.</li>
+      <li>If any bit is 0: <em> definitely does not exist.</em></li>
+    </ul>
+
+<div class="image-wrapper">
+  <img src="check_bloom.png" alt="Check membership" class="case-image" />
+  <p class="image-caption">Figure 3: Check membership</p>
+  <p class="image-courtesy">
+    Image courtesy: 
+    <a href="https://www.enjoyalgorithms.com/blog/bloom-filter" target="_blank" rel="noopener noreferrer">
+      enjoyalgorithms
+    </a>
+  </p>
+</div>
+
+  
+<p><strong>Example:</strong></p>
+
+<div class="image-wrapper">
+  <img src="Bloom_example.png" alt="example" class="case-image" />
+  <p class="image-caption">Figure 4: Bloom Filter Visualization With Example:</p>
+  <p class="image-courtesy">
+    Image courtesy: 
+    <a href="https://www.enjoyalgorithms.com/blog/bloom-filter" target="_blank" rel="noopener noreferrer">
+      enjoyalgorithms
+    </a>
+  </p>
+</div>
+
+<section class="optimization-section">
+  <h3>Optimization Strategies</h3>
+
+  <ol>
+    <li>
+      <strong>Optimal number of hash functions (<code>k</code>)</strong>:
+      <ul>
+        <li>
+          Formula: <code>k = (m/n) * ln(2)</code><br>
+          where:
+          <ul>
+            <li><code>m</code> = bit array size</li>
+            <li><code>n</code> = expected number of elements</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Increase bit array size (<code>m</code>)</strong>:
+      <ul>
+        <li>Reduces collisions and false positives.</li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>Layered Filters</strong>:
+      <ul>
+        <li>Use <strong>multiple Bloom filters</strong> to cross-check and reduce false positives.</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+
+  <h3> Why Bloom Filters for Spam Detection?</h3>
+  <ul>
+    <li>Quickly pre-filters emails matching known spam patterns</li>
+    <li>Reduces load on deeper machine learning models</li>
+    <li>Consumes minimal memory for large datasets</li>
+    <li>Ideal for high-throughput mail servers and scalable environments</li>
+  </ul>
+</section>
+
+
+    </div>
+
+    <!--<div class="case-subsection">
+      <h4>💻 Code and Implementation</h4>
+      <pre><code class="language-python">
+        # Sample placeholder for Bloom filter implementation
+        class BloomFilter:
+        def __init__(self, size, hash_count):
+            self.size = size
+            self.hash_count = hash_count
+            self.bit_array = [0] * size
+
+        def add(self, item):
+            # Add hash logic here
+            pass
+
+        def check(self, item):
+            # Membership check
+            pass
+      </code></pre>
+    </div>-->
+
+    <div class="case-subsection">
+  <h4>📊 Analysis and Efficiency</h4>
+  <ul>
+    <li>
+      <strong>Time Complexity:</strong> 
+      Insertion and query operations take <code>O(k)</code> time, where <code>k</code> is the number of hash functions used. This is constant-time in practice and highly efficient.
+    </li>
+    <li>
+      <strong>Space Complexity:</strong> 
+      Requires <code>m</code> bits of memory, where <code>m</code> is the size of the bit array. This is very space-efficient compared to storing actual items, especially when <code>m</code> and <code>k</code> are optimally chosen based on expected inputs.
+    </li>
+    <li>
+      <strong>False Positive Rate:</strong> 
+      Given by the formula:  
+      <br><code>P = (1 - e<sup>-kn/m</sup>)<sup>k</sup></code>  
+      where:
+      <ul>
+        <li><code>n</code> = number of inserted elements</li>
+        <li><code>m</code> = size of bit array</li>
+        <li><code>k</code> = number of hash functions</li>
+      </ul>
+      This rate increases with more insertions and can be reduced by optimizing <code>k</code> and <code>m</code>.
+    </li>
+  </ul>
+</div>
+
+<div class="case-subsection">
+  <h4 class="section-heading">⚖️ Trade-offs in Bloom Filter</h4>
+  <ul class="tradeoffs-list">
+    <li><strong>Space vs Accuracy:</strong> Using a larger bit array reduces false positives but increases memory usage.</li>
+    <li><strong>Speed vs Complexity:</strong> More hash functions improve accuracy but increase insertion/query time.</li>
+    <li><strong>False Positives:</strong> Bloom filters may say an item is present even if it’s not, but they never miss actual items.</li>
+    <li><strong>Scalability:</strong> Once created, the size of the Bloom filter cannot be changed without rebuilding it.</li>
+  </ul>
+</div>
+
+
+
+   <div class="case-subsection">
+  <h4> Reflection and Learnings</h4>
+  <p>This project provided a clear understanding of how Bloom Filters efficiently manage membership queries with limited memory usage. Exploring the balance between false positive rates and space savings helped me appreciate the practical trade-offs involved in probabilistic data structures.</p>
+  <p>While the theory behind multiple hash functions initially seemed complex, implementing the insertion and query processes clarified their role in reducing collisions and errors. Visualizing the process through code and diagrams further reinforced these concepts.</p>
+  <p>Overall, this experience enhanced my grasp of space-efficient data structures and inspired me to explore advanced variants, such as Counting Bloom Filters, in future work.</p>
+</div>
+
+ <div class="case-subsection">
+  <h4>📚 References</h4>
+  <ul>
+    <li><a href="https://medium.com/@sylvain.tiset/bloom-filters-101-the-power-of-probabilistic-data-structures-ef1b4a422b0b" target="_blank" rel="noopener noreferrer">Bloom Filters 101: The Power of Probabilistic Data Structures – Medium</a></li>
+    <li><a href="https://www.enjoyalgorithms.com/blog/bloom-filter" target="_blank" rel="noopener noreferrer">Bloom Filter Explanation – Enjoy Algorithms</a></li>
+    <li><a href="https://youtu.be/GT0En1dGntY?si=sBJatePRNHM1jGfs" target="_blank" rel="noopener noreferrer">Bloom Filter Explained – YouTube</a></li>
+  </ul>
+</div>
+</div>
+</body>
+</html>

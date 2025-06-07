@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 4</title>
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Business Case  Start -->
+<!-- Business Case 4 Start -->
+<div class="business-case">
+  <h3 class="case-title">Amazon’s Search Auto-Completion Using Trie + Heaps</h3>
+
+  <div class="case-subsection">
+    <h4>Problem Statement :</h4>
+    <p>
+      As users begin typing a product name in Amazon’s search bar, the system instantly suggests relevant, high-frequency queries such as “wireless earbuds” or “wireless mouse.” 
+      This auto-completion must happen in real time, scale to millions of products, and adapt to changing trends. 
+      The challenge lies in efficiently storing and retrieving all search phrases while ranking suggestions based on popularity, recency, and contextual relevance.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Significance :</h4>
+    <p>
+      Instant, relevant suggestions improve customer experience, reduce typing effort, and accelerate product discovery. 
+      It also increases conversion rates by nudging users toward popular or profitable queries. 
+      A fast, memory-efficient backend ensures suggestions stay responsive even during peak traffic, contributing directly to Amazon’s sales funnel.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Data Structures and Algorithms Behind Amazon’s Auto-Completion Engine</h4>
+    <p class="intro-text">
+      Amazon uses a combination of <strong>Trie trees</strong>, <strong>frequency-based heaps</strong>, and optionally <strong>suffix arrays</strong> to support real-time, ranked query suggestions.
+      This trio enables rapid prefix lookup, dynamic ranking, and substring-based matching — delivering a smooth and intelligent auto-suggestion experience.
+    </p>
+
+    <div class="card">
+      <h3>1. Trie (Prefix Tree)</h3>
+      <p>
+        The trie is the core structure used to store all possible search terms. Each node represents a character, and paths from root to leaves form full words.
+        It allows fast prefix matching by traversing from root to current prefix.
+      </p>
+      <ul>
+        <li><strong>Fast Prefix Matching:</strong> Locate all completions in O(L)</li>
+        <li><strong>Memory Efficient:</strong> Shared prefix paths reduce redundancy</li>
+        <li><strong>Supports Real-Time Typing:</strong> Instant traversal while typing</li>
+      </ul>
+      <p><strong>Complexity:</strong><br> Insert/Search: O(L), where L is the length of the word<br> Space: O(n × L)</p>
+      <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/trie_DS.cpp" target="_blank">🔗 View Code</a></p>
+    </div>
+
+    <div class="card">
+      <h3>2. Frequency Heap (Min/Max Heap)</h3>
+      <p>
+        Each trie node maintains a min-heap of top K most frequent completions from that prefix. This allows fast access to the most relevant suggestions.
+      </p>
+      <ul>
+        <li><strong>Top-K Ranking:</strong> Always return the most popular completions</li>
+        <li><strong>Dynamic Updating:</strong> Adjusts ranking based on new searches</li>
+        <li><strong>Integrates with Trie Nodes:</strong> Stored locally at each node</li>
+      </ul>
+      <p><strong>Complexity:</strong><br> Insert: O(log K)<br> Query Top-K: O(K)<br> Space: O(K × N)</p>
+      
+    </div>
+
+    <div class="card">
+      <h3>3. Suffix Array (Optional Enhancement)</h3>
+      <p>
+        To support <strong>substring matching</strong> (like typing “eless” to find “wireless”), Amazon may use suffix arrays or suffix tries in addition to standard trie.
+        These support reverse lookup and partial matches.
+      </p>
+      <ul>
+        <li><strong>Substring Lookup:</strong> Matches even middle parts of queries</li>
+        <li><strong>Useful for Typos/Corrections:</strong> Suggests matches even with misspellings</li>
+        <li><strong>Memory Tradeoff:</strong> Higher memory for more powerful features</li>
+      </ul>
+      <p><strong>Complexity:</strong><br> Build: O(N log N)<br> Query: O(log N + M)<br> Space: O(N)</p>
+      <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/suffix_array.cpp" target="_blank">🔗 View Code</a></p>
+    </div>
+
+    <div class="card">
+      <h3>4. Real-Time Typing Example</h3>
+      <p>
+        Consider a user typing “wire”:
+        <br><strong>Trie path:</strong> w → i → r → e
+        <br><strong>Suggestions from heap:</strong> [wireless earbuds, wireless mouse, wired earphones]
+        <br>As they type more, heap narrows down to more specific results.
+      </p>
+      <div class="image-wrapper">
+        <img src="Trie.png" class="case-image">
+        <p class="image-caption">Figure: Depiction of a Trie datastructure</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Inferences</h4>
+    <p>
+      Amazon’s auto-suggestion mechanism demonstrates how foundational data structures like tries and heaps can drive high-performance search systems.
+      While the trie supports fast structural access to completions, the min-heap ensures relevance and ranking, and suffix arrays offer flexibility for more advanced matching.
+    </p>
+    <p>
+      Together, this layered architecture supports a responsive, intelligent, and scalable user experience that encourages faster search and higher conversions.
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>References</h4>
+    <ul>
+      <li><a href="https://www.geeksforgeeks.org/trie-insert-and-search/" target="_blank" rel="noopener noreferrer">Trie Data Structure — GeeksforGeeks</a></li>
+      <li><a href="https://cp-algorithms.com/string/suffix-array.html" target="_blank" rel="noopener noreferrer">Suffix Array — CP Algorithms</a></li>
+        <li><a href="https://gallery.selfboot.cn/en/algorithms/trie" target="_blank" rel="noopener noreferrer">Trie Visualization — Selfboot-cn</a></li>
+      <li><a href="https://towardsdatascience.com/how-autocomplete-works-under-the-hood-1e0b2bf89b9" target="_blank" rel="noopener noreferrer">Autocomplete Systems — Medium</a></li>
+    </ul>
+  </div>
+</div>
+<!-- Business Case 4 End -->
+
+
+</body>
+</html>
+

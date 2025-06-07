@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 3</title>
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Business Case 3 Start -->
+<div class="business-case">
+  <h3 class="case-title">Amazon’s Warehouse Optimization Using Pathfinding and Greedy Algorithms</h3>
+
+  <div class="case-subsection">
+    <h4> Problem Statement : </h4>
+    <p>Amazon’s fulfillment centers rely on fleets of autonomous Kiva robots to retrieve items from shelves and deliver them to packing stations. The core challenge is to efficiently determine the shortest and safest routes for these robots in a complex, dynamic warehouse layout. 
+    This includes accounting for obstacles, aisle congestion, and changes in path availability in real time. The goal is to minimize total travel time and increase throughput while avoiding collisions and bottlenecks.</p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Significance : </h4>
+    <p>Optimizing robot navigation in warehouses is critical for improving operational efficiency and reducing order processing time. By minimizing travel distances and avoiding delays, Amazon can handle a higher volume of orders, lower labor costs, and enhance customer satisfaction with faster deliveries. Effective path planning also increases the lifespan of hardware by reducing unnecessary movements and energy consumption, reinforcing Amazon’s competitive advantage in logistics automation.</p>
+  </div>
+
+
+  
+<div class="case-subsection">
+  <h4>Data Structures and Algorithms Behind Amazon’s Warehouse Optimization</h4>
+  <p class="intro-text">
+Amazon’s warehouse optimization system, powering its fleet of Kiva robots, exemplifies how foundational data structures and algorithms can drive real-time, large-scale logistics. By modeling the warehouse as a dynamic weighted graph and leveraging priority queues, segment trees, and shortest path algorithms like Dijkstra’s, Amazon achieves efficient, adaptive routing for item picking. The system’s strength lies in its ability to scale with high throughput demands while remaining computationally optimal under evolving warehouse conditions.  </p>
+
+<div class="card">
+    <h2>1. Graph Representation of Warehouse Layout</h2>
+    <p>The entire warehouse is modeled as a graph, where each location (shelf, dock, or junction) is treated as a node, and the traversable paths between them are edges. Each edge is weighted by distance or travel time. This abstraction enables dynamic routing and precise navigation in real time.</p>
+    <p>Graph structures allow robots to map out their entire world in a scalable, adaptable way. Any change in warehouse layout or blockage can be instantly modeled as an edge removal or weight update, making the system responsive and situationally aware.</p>
+    <div class="highlights">
+      
+    
+      <ul>
+        <li><strong>Flexible Modeling:</strong> Adapts to blocked paths or layout changes</li>
+        <li><strong>Efficient Traversal:</strong> Enables quick route recalculations</li>
+        <li><strong>Scalable Mapping:</strong> Ideal for large or expanding warehouses</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Space: Linear in the number of nodes and edges — O(V + E)<br>
+      Traversal: Proportional to the number of neighbors — O(degree of node)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Priority Queue (Min-Heap)</h2>
+    <p>Min-heaps allow robots to always select the node with the lowest tentative cost during shortest-path searches. They significantly reduce time spent exploring less optimal options during navigation.</p>
+    <p>This is essential for real-time applications where robots must continuously re-plan based on traffic, tasks, or hazards.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Fast Node Selection:</strong> Picks best candidate instantly</li>
+        <li><strong>Supports Real-Time Decisions:</strong> Helps optimize paths dynamically</li>
+        <li><strong>Integrates With Pathfinding:</strong> Essential for Dijkstra, A*, etc.</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Each insertion/removal takes logarithmic time — O(log V))<br>
+      Space: Stores one entry per node — O(V)
+    </div>
+
+     <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/adjacency_matrix.cpp" target="_blank">🔗 View Code</a></p>
+  </div>
+
+  <div class="card">
+    <h2>3. Segment Tree for Zone Management</h2>
+    <p>A segment tree partitions the warehouse into logical zones (like aisles or sections) to support fast range-based updates — such as marking multiple zones congested or under maintenance.</p>
+    <div class="highlights">
+    
+      <ul>
+        <li><strong>Real-Time Zone Updates:</strong> Efficient range queries and changes</li>
+        <li><strong>Dynamic Routing:</strong> Avoids areas based on congestion or hazards</li>
+        <li><strong>Supports Smart Segmentation:</strong> Zones can be grouped for better planning</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Build Time: Linear time to build based on the number of zones — O(N)<br>
+      Query/Update: Logarithmic time for range operations — O(log N)<br>
+      Space: Four times the number of zones — O(4N)
+    </div>
+     <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/segment_tree.cpp" target="_blank">🔗 View Code</a></p>
+  </div>
+
+  <div class="card">
+    <h2>4. Dijkstra’s Algorithm for Shortest Paths</h2>
+    <p>A classic algorithm that computes the shortest path from a source node to all others, ensuring guaranteed optimality when all weights are non-negative.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Guaranteed Optimality:</strong> Finds lowest-cost path</li>
+        <li><strong>Integrates with Real-World Metrics:</strong> Supports weighted planning</li>
+        <li><strong>Suitable for Static Layouts:</strong> Best for pre-mapped environments</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Scales with edges and node insertions — O(E log V)<br>
+      Space: Needs space for graph and distance tracking — O(V + E)
+    </div>
+     <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/Dijakstra's_algo.cpp" target="_blank">🔗 View Code</a></p>
+  </div>
+
+  <h1><span class="rocket">🚀</span>Advanced Algorithms & Techniques</h1>
+
+  <div class="card">
+    <h2>1. Incremental Graph Search (e.g., D* Lite, LPA*)</h2>
+    <p>Incremental search algorithms reuse previous computations to quickly re-plan when only small parts of the graph change (like a blocked aisle or new obstacle).</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Adaptive Planning:</strong> Instantly reacts to layout changes</li>
+        <li><strong>High Reusability:</strong> Updates only affected portions of the path</li>
+        <li><strong>Ideal for Dynamic Environments:</strong> Great for live traffic or shifting obstacles</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Logarithmic per affected change — O(k log k), where k is number of updates<br>
+      Space: Similar to graph storage — O(V + E)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Multi-Agent Pathfinding with CBS</h2>
+    <p>Conflict-Based Search allows multiple robots to share the same space without conflict. It resolves collisions through constraint reasoning.</p>
+    <div class="highlights">
+     
+      <ul>
+        <li><strong>Safe Coordination:</strong> Avoids robot-robot collisions</li>
+        <li><strong>Conflict Resolution:</strong> Smart constraint-based path adjustment</li>
+        <li><strong>Works with Multiple Agents:</strong> Scales with fleet size</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Varies with problem size; exponential in worst case but manageable in practice<br>
+      Space: Grows with agent count and layout complexity — O(agents × graph size)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3. Hierarchical Pathfinding (HPA*)</h2>
+    <p>HPA* simplifies pathfinding by planning at a high abstraction and refining details later. It’s excellent for large or multi-floor warehouses.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>High-Level Planning:</strong> Efficient across large layouts</li>
+        <li><strong>Local Refinement:</strong> Details computed only when required</li>
+        <li><strong>Faster Search:</strong> Fewer nodes processed overall</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Faster than flat A* due to fewer expansions<br>
+      Space: Depends on abstraction level — moderate usage
+
+
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4. Experience Graphs</h2>
+    <p>Experience graphs cache previously successful paths and reuse them when similar navigation tasks arise, learning optimal routes over time.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Path Reuse:</strong> Quickly answers common navigation tasks</li>
+        <li><strong>Learns Over Time:</strong> Improves performance with experience</li>
+        <li><strong>Efficient Memory Use:</strong> Stores optimal routes only</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Constant to logarithmic for path recall — O(1) to O(log N)<br>
+      Space: Grows with number of stored paths — O(N)
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>5. Risk-Aware Planning</h2>
+    <p>Risk-aware algorithms choose paths not just by speed, but by safety, stability, or energy efficiency — crucial for environments shared with humans.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Safety First:</strong> Avoids unstable or risky paths</li>
+        <li><strong>Energy-Conscious:</strong> Chooses low-battery-drain options</li>
+        <li><strong>Environment-Aware:</strong> Reacts to temporary hazards</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Slightly slower due to risk evaluation overhead<br>
+      Space: Minimal additional data per node/edge for storing risk values
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6. Spatial Indexing (e.g., R-Trees)</h2>
+    <p>R-trees help manage spatial relationships — locating nearby robots, detecting congestion zones, and assigning tasks with spatial awareness.</p>
+    <div class="highlights">
+      
+      <ul>
+        <li><strong>Fast Object Lookup:</strong> Finds nearby entities instantly</li>
+        <li><strong>Collision Avoidance:</strong> Prevents navigation conflicts</li>
+        <li><strong>Proximity Awareness:</strong> Enables smarter planning</li>
+      </ul>
+    </div>
+    <div class="complexity">
+      <strong>Complexity:</strong><br>
+      Time: Efficient for insert/search — O(log N)<br>
+     Space: Linear with number of objects — O(N)
+    </div>
+  </div>
+<div class="case-subsection">
+  <h4>Inferences</h4>
+  <p>
+    This study showcases the synergy between traditional and advanced path planning strategies in warehouse automation. Classical structures such as graphs, priority queues, and segment trees lay a reliable groundwork for scalable navigation and zone management, offering fast, predictable performance in structured environments.
+  </p>
+  <p>
+    On the other hand, advanced algorithms like Incremental Search (LPA*, D* Lite), Conflict-Based Search (CBS), and Experience Graphs offer dynamic responsiveness, adaptability to changes, and intelligent re-planning. These approaches empower robots to navigate with increased awareness of risk, congestion, and other real-time factors, making the system more robust and operationally efficient.
+  </p>
+</div>
+
+<div class="case-subsection">
+  <h4>References</h4>
+  <ul>
+    <li>
+      <a href="https://www.geeksforgeeks.org" target="_blank" rel="noopener noreferrer">
+        Data Structures and Algorithms — GeeksforGeeks
+      </a>
+    </li>
+    <li>
+      <a href="https://cp-algorithms.com/" target="_blank" rel="noopener noreferrer">
+        Competitive Programming Algorithms — cp-algorithms
+      </a>
+    </li>
+    <li>
+      <a href="https://idm-lab.org/bib/abstracts/papers/aaai02b.pdf" target="_blank" rel="noopener noreferrer">
+        D* Lite Algorithm — Koenig & Likhachev (2002)
+      </a>
+    </li>
+    <li>
+      <a href="https://www.cs.cmu.edu/~dsilver/pub/coop_path.pdf" target="_blank" rel="noopener noreferrer">
+        Hierarchical Pathfinding (HPA*) — David Silver
+      </a>
+    </li>
+    <li>
+      <a href="https://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/view/9817" target="_blank" rel="noopener noreferrer">
+        Conflict-Based Search for Multi-Agent Pathfinding — AAAI
+      </a>
+    </li>
+    <li>
+      <a href="https://www.ri.cmu.edu/pub_files/2011/8/phillips_experience_icra2011.pdf" target="_blank" rel="noopener noreferrer">
+        Experience Graphs — CMU Robotics Institute
+      </a>
+    </li>
+    <li>
+      <a href="https://ieeexplore.ieee.org/document/7487255" target="_blank" rel="noopener noreferrer">
+        Multi-Heuristic A* and Risk-Aware Planning — IEEE Xplore
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+
+<!-- Business Case 3 End -->
+
+</body>
+</html>
+

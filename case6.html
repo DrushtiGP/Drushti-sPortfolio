@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 6</title>
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Business Case 5 Start -->
+<div class="business-case">
+  <h3 class="case-title">Amazon Product Search Ranking using Inverted Index and TF-IDF</h3>
+
+  <div class="case-subsection">
+    <h4>Problem Statement</h4>
+    <p>
+      With millions of products across countless categories, Amazon needs to provide users with fast and highly relevant product search results. 
+      A naive linear scan of product descriptions or titles is computationally infeasible due to the massive scale of the catalog and the expectation of sub-second latency.
+    </p>
+    <p>
+      Amazon’s challenge is to:
+      <ul>
+        <li>Efficiently retrieve only the subset of products that match the search query.</li>
+        <li>Rank them based on their relevance to the user's intent, not just raw text match.</li>
+      </ul>
+      This is especially difficult due to:
+      <ul>
+        <li>Varying lengths and styles of product titles/descriptions.</li>
+        <li>Ambiguity in user queries (e.g., "apple" could mean fruit or electronics).</li>
+        <li>Frequent updates to product listings.</li>
+      </ul>
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Significance</h4>
+    <p>
+      A robust product search system is critical to Amazon’s success:
+      <ul>
+        <li><strong>Customer Satisfaction:</strong> Accurate results reduce friction and help customers find what they need instantly.</li>
+        <li><strong>Sales Optimization:</strong> Relevant products ranked higher drive higher click-through and conversion rates.</li>
+        <li><strong>Scalability:</strong> Systems must remain fast even as millions of new products are added or updated daily.</li>
+        <li><strong>Personalization & Ranking:</strong> Accurate base ranking enables further layers of personalization, like using user history and preferences.</li>
+      </ul>
+    </p>
+  </div>
+
+  <div class="case-subsection">
+    <h4>Data Structures and Algorithms Used</h4>
+    <p class="intro-text">Amazon uses a multi-stage information retrieval pipeline, and at its core are two key techniques:</p>
+
+    <div class="card">
+      <h3>1. Inverted Index (Fast Matching Layer)</h3>
+      <p>
+        An inverted index maps each unique keyword to the list of product documents where it appears.
+        Instead of scanning every product, the search engine directly retrieves relevant product IDs from this index.
+      </p>
+      <div class="image-wrapper">
+        <img src="inverted-index.webp" alt="Inverted_index" class="case-image">
+        <p class="image-caption">Figure 1: Difference between forward and inverted indexing</p>
+        <p class="image-courtesy">Image courtesy: <a href="https://www.google.com/url?sa=i&url=https%3A%2F%2Fspotintelligence.com%2F2023%2F10%2F30%2Finverted-indexing%2F&psig=AOvVaw1jrpzNG_xzGM7VN3RKxFU4&ust=1749405820521000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCIiyptTy340DFQAAAAAdAAAAABAN" target="_blank">Spot Intelligence</a></p>
+    </div>
+      <p></p>
+      <ul>
+        <li><strong>Structure:</strong> A hash map where each key is a word and the value is a list of product IDs (posting list).</li>
+        <li><strong>Efficient Retrieval:</strong> Reduces search space drastically by skipping irrelevant documents.</li>
+        <li><strong>Compact & Scalable:</strong> Tokens are indexed once, making it storage-efficient and parallelizable.</li>
+      </ul>
+      <p><strong>Complexity:</strong><br>
+        Build Time: O(N × L) &nbsp;&nbsp;&nbsp; Query Time: O(k)</p>
+    </div>
+
+    <div class="card">
+      <h3>2. TF-IDF Scoring (Relevance Ranking Layer)</h3>
+      <p>
+        TF-IDF ranks the retrieved products based on relevance to the search query. It balances frequency of terms with how unique they are across all products.
+      </p>
+      <div class="image-wrapper">
+    <img src="tf-idf-2-1-1024x375.png" alt="TF-IDF" class="case-image">
+    <p class="image-caption">Figure 2: TF-IDF</p>
+    <p class="image-courtesy">Image courtesy: <a href="https://jerichosiahaya.medium.com/item-based-collaborative-filtering-explained-eaf3e31f39c1" target="_blank">SEOQuantam</a></p>
+  </div>
+      <ul>
+        <li><strong>Term Frequency (TF):</strong> Measures how often a term appears in a product.</li>
+        <li><strong>Inverse Document Frequency (IDF):</strong> Reduces importance of common words appearing in many products.</li>
+        <li><strong>Relevance Ranking:</strong> Products with higher TF-IDF scores appear higher in search results.</li>
+      </ul>
+      <p><strong>Complexity:</strong><br>
+        Scoring Time: O(M × T) &nbsp;&nbsp;&nbsp; Space: O(N × V)</p>
+    </div>
+  </div>
+
+  <div class="case-subsection">
+    <h4>How Amazon Uses This in Practice</h4>
+    <p>
+      Amazon’s product search pipeline includes multiple stages to optimize both speed and relevance:
+      <ul>
+        <li><strong>Text Preprocessing:</strong> Tokenize, normalize, and clean product descriptions and titles.</li>
+        <li><strong>Inverted Index Lookup:</strong> Retrieve candidate products quickly using keyword matches.</li>
+        <li><strong>TF-IDF Ranking:</strong> Rank candidate products based on query relevance.</li>
+        <li><strong>Re-ranking:</strong> Incorporate behavioral signals, ratings, and metadata for final ranking.</li>
+      </ul>
+    </p>
+  </div>
+
+<div class="case-subsection">
+  <h4>Summary</h4>
+  <p>
+    <div class="case-subsection">
+  <h4>Inferences and Takeaways</h4>
+  <p>
+    This case study highlights how classic information retrieval techniques like inverted index and TF-IDF continue to power search at massive scales. By avoiding full catalog scans, Amazon ensures efficient query processing even as product volume grows exponentially. Relevance scoring via TF-IDF allows the system to surface not just matching, but meaningful results that align with user intent. Most importantly, this foundation is highly extensible — enabling seamless integration of modern personalization techniques, machine learning rankers, and deep semantic search layers. Together, they deliver a fast, relevant, and scalable search experience across hundreds of millions of products.
+  </p>
+</div>
+
+  </p>
+</div>
+
+
+  <div class="case-subsection">
+    <h4>References</h4>
+    <ul>
+      <li><a href="https://www.geeksforgeeks.org/inverted-index/" target="_blank">Inverted indexing by GFG</a></li>
+      <li><a href="https://nlp.stanford.edu/IR-book/" target="_blank">Introduction to Information Retrieval — Manning et al.</a></li>
+      <li><a href="https://towardsdatascience.com/using-inverted-index-for-efficient-document-similarity-computation-a8d3fb8f0c12/" target="_blank">TF-IDF Explained — Towards Data Science</a></li>
+    </ul>
+  </div>
+</div>
+<!-- Business Case 5 End -->
+
+</body>
+</html>

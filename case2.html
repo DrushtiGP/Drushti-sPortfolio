@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buisiness Case 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    
+<!-- Business Case 1 Start -->
+<div class="business-case">
+  <h3 class="case-title">Amazon's Product Recommendation Engine</h3>
+
+  <div class="case-subsection">
+    <h4> Problem Statement : </h4>
+    <p>Amazon generates a significant portion of its revenue through its recommendation engine — reportedly up to 35% of total sales. The system personalizes shopping experiences, boosts customer retention, and increases Average Order Value (AOV).</p>
+    <p>Traditional user-based collaborative filtering faced scalability issues due to the vast number of users and products. To address this, Amazon developed an item-to-item collaborative filtering algorithm that focuses on the relationships between items rather than users.</p>
+    <p>This makes it an excellent example of how algorithms drive business success.</p>
+  </div>
+
+  <div class="case-subsection">
+    <h4> Initial Recommendation Approaches : </h4>
+    <p>Amazon first explored traditional User-User Collaborative Filtering:
+      <ul>
+        <li>Match users with similar purchase histories</li>
+        <li>Recommend items bought by those similar users</li>
+      </ul>
+    </p>
+    
+    <p>Problem with this approach:
+      <ul>
+        <li>It doesn’t scale well with millions of users.</li>
+        <li>New users often have no history — cold start problem.</li>
+        <li>User preferences evolve rapidly.</li>
+        <li>Users are not always the best comparison units — but items are more stable.</li>
+      </ul>
+    </p>
+  </div>
+
+  <p>Thus amazon built a item-item based collaborative filtering which asks 
+    <b>What items are similar to the one you're looking at ? </b> rather than asking 
+    <b>which users are like you?</b>
+  </p>
+
+  <div class="image-wrapper">
+    <img src="Item-item based CF.png" alt="IBCF example" class="case-image">
+    <p class="image-caption">Figure 5: IBCF example</p>
+    <p class="image-courtesy">Image courtesy: <a href="https://jerichosiahaya.medium.com/item-based-collaborative-filtering-explained-eaf3e31f39c1" target="_blank">Medium</a></p>
+  </div>
+  <div class ='card '>
+      <p>There are 4 fruit items that will be tested in a recommendation system, namely orange, strawberry, apple, and banana. 
+        The parameter used here is the buyer who has successfully purchased any of these four items.</p>
+        
+        <br>
+        <p>The first buyer purchases oranges, apples, and bananas. The second buyer purchases oranges
+          and apples, while the third buyer only purchases apples. Let’s say the third buyer wants to get a recommendation for other fruits based on the fruit they have purchased, namely apples. Then, the recommendation system will calculate 
+          the similarity of other fruits based on the purchase history of the buyer who has purchased apples.</p>
+        
+          <br>
+          <p>
+            It can be seen that the second buyer bought apples and also oranges, while the first buyer bought oranges, apples, and bananas. The analysis result that can be obtained from this recommendation system is that apples are purchased by the first and second buyers who also both purchase oranges. 
+            Therefore, the recommendation system will recommend oranges to the third buyer.
+
+
+          </p>
+
+
+  </div>
+  
+<div class="case-subsection">
+  <h4>Data Structures & Algorithms Powering Item-to-Item Collaborative Filtering</h4>
+  <p class="intro-text">
+    Amazon’s personalized recommendation engine, used across millions of users and items, is a high-performance algorithmic system. The brilliance lies in how it uses classical data structures with real-world constraints to scale efficiently.
+  </p>
+
+  <!-- Card 1: Co-occurrence Matrix -->
+  <div class="card">
+    <h3>1. Co-occurrence Matrix using Nested Hash Maps</h3>
+    <p>
+      Tracks how often two items are purchased together. This helps identify meaningful patterns (e.g., customers who bought <i>bread</i> also bought <i>butter</i>).
+      Storing all item pairs is inefficient — so we use a sparse structure:
+    </p>
+    <div class="code-block">unordered_map&lt;int, unordered_map&lt;int, int&gt;&gt;</div>
+
+    <ul>
+      <li><b>Sparse Matrix Friendly:</b> Avoids unnecessary zeros.</li>
+      <li><b>Memory Efficient:</b> Stores only actual co-occurrences.</li>
+      <li><b>Fast Insertions & Updates:</b> O(1) hash access.</li>
+      <li><b>Symmetric Update:</b> Co-occurrence is bidirectional.</li>
+    </ul>
+
+    <p><b>Complexity:</b></p>
+    <ul>
+      <li><b>Time:</b> O(1) per update, worst-case O(n²).</li>
+      <li><b>Space:</b> O(n·k), where k is avg neighbors/item.</li>
+    </ul>
+
+    <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/cooccurrence_matrix.cpp" target="_blank">🔗 View Code</a></p>
+  </div>
+
+  <!-- Card 2: Cosine Similarity -->
+  <div class="card">
+    <h3>2. Cosine Similarity Computation</h3>
+    <p>
+      Measures how similar two items are by comparing direction of sparse vectors.
+    </p>
+    <div class="code-block">unordered_map&lt;int, int&gt;</div>
+
+    <ul>
+      <li><b>Sparse:</b> Only co-purchased items are stored.</li>
+      <li><b>Bias Mitigation:</b> Normalizes for popularity.</li>
+      <li><b>Interpretable:</b> Reflects shared neighbors.</li>
+    </ul>
+
+    <p><b>Complexity:</b></p>
+    <ul>
+      <li><b>Time:</b> O(min(|A|, |B|)).</li>
+      <li><b>Space:</b> O(k), where k is items in vector.</li>
+    </ul>
+  </div>
+
+  <!-- Card 3: Top-K Similar Items -->
+  <div class="card">
+    <h3>3. Maintaining Top-K Similar Items</h3>
+    <p>
+      Instead of storing all similarities, we retain top-K using a min-heap.
+    </p>
+    <div class="code-block">priority_queue&lt;pair&lt;float, int&gt;, vector&lt;&gt;, greater&lt;&gt;&gt;</div>
+
+    <ul>
+      <li><b>Efficient Pruning:</b> Discards least similar quickly.</li>
+      <li><b>Memory Bound:</b> Stores only top-K.</li>
+      <li><b>Dynamic:</b> Works well with streaming.</li>
+    </ul>
+
+    <p><b>Complexity:</b></p>
+    <ul>
+      <li><b>Time:</b> O(log K) per insert.</li>
+      <li><b>Space:</b> O(K) per item.</li>
+    </ul>
+
+    <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/min_heap.cpp" target="_blank">🔗 View Code</a></p>
+  </div>
+
+  <!-- Card 4: Final Lookup -->
+  <div class="card">
+    <h3>4. Final Recommendation Lookup</h3>
+    <p>
+      Once precomputed, the recommendation lookup is fast via hash maps:
+    </p>
+    <div class="code-block">unordered_map&lt;int, vector&lt;pair&lt;int, float&gt;&gt;&gt;</div>
+
+    <ul>
+      <li><b>Instant Retrieval:</b> O(1) per item ID.</li>
+      <li><b>Pre-indexed:</b> Reduces latency significantly.</li>
+      <li><b>Scalable:</b> Can serve millions of requests/sec.</li>
+    </ul>
+
+    <p><b>Complexity:</b></p>
+    <ul>
+      <li><b>Time:</b> O(1) hash access.</li>
+      <li><b>Space:</b> O(n·K).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="case-subsection">
+  <h4> Inferences</h4>
+  <p>
+    This case study highlighted how item-item collaborative filtering leverages efficient data structures and similarity computations to deliver scalable, real-time recommendations. Precomputing similarities and using sparse representations optimize memory and speed, enabling personalized results for millions of users.
+  </p>
+  <p>
+    While highly effective and adaptable across domains, the approach faces challenges like cold start and popularity bias, which require further strategies. Overall, it demonstrated the power of combining classical algorithms with practical system design to build responsive recommendation engines.
+  </p>
+</div>
+
+
+
+<div class="case-subsection">
+  <h4> References</h4>
+  <ul>
+    <li>
+      <a href="https://towardsdatascience.com/recommender-systems-collaborative-filtering-7f7f5f1e5b1b" target="_blank" rel="noopener noreferrer">
+        Collaborative Filtering — Towards Data Science
+      </a>
+    </li>
+    <li>
+      <a href="https://www.analyticsvidhya.com/blog/2021/06/understanding-item-based-collaborative-filtering/" target="_blank" rel="noopener noreferrer">
+        Item-Based Collaborative Filtering — Analytics Vidhya
+      </a>
+    </li>
+    <li>
+      <a href="https://realpython.com/build-recommendation-engine-collaborative-filtering/" target="_blank" rel="noopener noreferrer">
+        Building a Recommender System with Collaborative Filtering — RealPython
+      </a>
+    </li>
+    <li>
+      <a href="https://www.youtube.com/watch?v=ZspR5PZemcs" target="_blank" rel="noopener noreferrer">
+        Recommender Systems - YouTube (StatQuest)
+      </a>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
