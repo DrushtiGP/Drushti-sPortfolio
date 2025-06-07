@@ -404,74 +404,187 @@
     Amazon’s personalized recommendation engine, used across millions of users and items, is a high-performance algorithmic system. The brilliance lies in how it uses classical data structures with real-world constraints to scale efficiently. 
     </p>
     <ul>
-      <div class="card">
-        <h3>1. Co-occurrence Matrix using Nested Hash Maps</h3>
-        <p>
-          In many recommendation systems and market basket analysis applications, it is essential to track how often two items are purchased together. This co-occurrence information helps identify meaningful 
-          patterns between items (e.g., customers who bought bread also bought butter).
-          The challenge lies in handling sparse and large-scale data — not every pair of items will be co-purchased, so storing all possible item-item combinations would be highly inefficient,
-        </p>
+<div class="card">
+  <h3>1. Co-occurrence Matrix using Nested Hash Maps</h3>
+  <p>
+    In many recommendation systems and market basket analysis applications, it is essential to track how often two items are purchased together. 
+    This co-occurrence information helps identify meaningful patterns between items 
+    (e.g., customers who bought <i>bread</i> also bought <i>butter</i>). 
+    The challenge lies in handling sparse and large-scale data — 
+    not every pair of items will be co-purchased, so storing all possible item-item combinations would be highly inefficient.
+  </p>
 
+  <section class="decision-tree-section">
+    <h3>Data structure used:</h3>
+    <p>
+      To store pairwise item purchase relationships, we use a nested hash map:
+    </p>
+    <p style="text-align: center;">
+      <b>unordered_map&lt;int, unordered_map&lt;int, int&gt;&gt;</b>
+    </p>
 
-      <section class="decision-tree-section">
-        <h3>Data structure used:</h3>
-        <p>
-          To store pairwise item purchase relationships, we use a nested hash map: 
-          <br>
-          <p style="text-align: center;">
-            <b>unordered_map&lt;int, unordered_map&lt;int, int&gt;&gt;</b>
-          </p>
-        </p>
-        <b>Because:</b>
-        <ul>
-          <li>Sparse Matrix Friendly: Most item pairs are never co-purchased; the nested hash map avoids storing unnecessary zeroes.</li>
-          <li>Memory Efficient: Stores only meaningful relationships, drastically reducing space in comparison to a full matrix.</li>
-          <li>Fast Insertions & Updates: Average-case time complexity of O(1) per insert/update due to the use of hash maps.</li>
-          <li>Symmetric Update: Co-occurrence is naturally bidirectional (itemA co-occurs with itemB → itemB co-occurs with itemA).</li>
-        </ul>
-
-        <h3>Time & Space Complexity:</h3>
-
-        <p><b>Time Complexity:</b></p>
-        <ul>
-          <li><code>O(1)</code> per insert/update (amortized) — thanks to hash map access.</li>
-          <li><code>O(n²)</code> if computing all pairwise combinations, but we only process actual purchases → practically much lower.</li>
-        </ul>
-
-        <p><b>Space Complexity:</b></p>
-        <ul>
-          <li><code>O(n · k)</code> where <code>n</code> is the number of items and <code>k</code> is the average number of co-occurring neighbors per item.</li>
-        </ul>
-        
-        <p >
-        🔗 <a href="https://github.com/YourUsername/YourRepoName/blob/main/path/to/code.cpp" target="_blank" rel="noopener noreferrer">View Code</a>
-      </p>
-        <h3>How does a Decision Tree work?</h3>
-        <p>Decision trees operate by splitting the data at each node based on the most significant feature, minimizing entropy (uncertainty). The process continues recursively to ensure that each branch contains items that are as similar as possible.</p>
-
-        <div class="image-wrapper">
-          <img src="decision_tree_example.png" alt="Example of Decision Tree" class="case-image">
-          <p class="image-caption">Figure 2: Example of Decision Tree for Fraud Detection</p>
-          <p class="image-courtesy">Image courtesy: <a href="https://www.analyticsvidhya.com/blog/2019/09/understanding-decision-tree-algorithm/" target="_blank">Analytics Vidhya</a></p>
-        </div>
-
-        <h3>Key Concepts of Decision Trees</h3>
-        <ul class="styled-list">
-          <li><strong>Root Node:</strong> Represents the feature that splits the dataset most effectively.</li>
-          <li><strong>Leaf Nodes:</strong> Represent the final decision or outcome (e.g., fraud or no fraud).</li>
-          <li><strong>Splitting:</strong> The process of dividing data at each node based on a feature's value.</li>
-          <li><strong>Pruning:</strong> The process of removing unnecessary branches to avoid overfitting.</li>
-        </ul>
-      </section>
-
-      <div class="image-wrapper">
-        <img src="tree_splitting.png" alt="Splitting a Decision Tree" class="case-image">
-        <p class="image-caption">Figure 3: Splitting a Decision Tree into Branches</p>
-        <p class="image-courtesy">Image courtesy: <a href="https://www.analyticsvidhya.com/blog/2019/09/understanding-decision-tree-algorithm/" target="_blank">Analytics Vidhya</a></p>
-      </div>
-
+    <b>Because:</b>
+    <ul>
+      <li><b>Sparse Matrix Friendly:</b> Most item pairs are never co-purchased; the nested hash map avoids storing unnecessary zeroes.</li>
+      <li><b>Memory Efficient:</b> Stores only meaningful relationships, drastically reducing space in comparison to a full matrix.</li>
+      <li><b>Fast Insertions & Updates:</b> Average-case time complexity of <code>O(1)</code> per insert/update due to the use of hash maps.</li>
+      <li><b>Symmetric Update:</b> Co-occurrence is naturally bidirectional (itemA co-occurs with itemB → itemB co-occurs with itemA).</li>
     </ul>
-  </div>
+
+    <h3>Time & Space Complexity:</h3>
+
+    <p><b>Time Complexity:</b></p>
+    <ul>
+      <li><code>O(1)</code> per insert/update (amortized) — thanks to hash map access.</li>
+      <li><code>O(n²)</code> if computing all pairwise combinations, but we only process actual purchases → practically much lower.</li>
+    </ul>
+
+    <p><b>Space Complexity:</b></p>
+    <ul>
+      <li><code>O(n · k)</code> where <code>n</code> is the number of items and <code>k</code> is the average number of co-occurring neighbors per item.</li>
+    </ul>
+
+    <p >
+      🔗 <a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/cooccurrence_matrix.cpp" 
+      target="_blank" rel="noopener noreferrer">View Code</a>
+    </p>
+
+    <p>
+      This approach is ideal for handling real-world data where relationships between elements are sparse, dynamic, and scale-dependent.
+      By combining datastructure performance with hash-based flexibility, we achieve both efficiency and scalability — 
+      crucial for high-throughput applications.
+    </p>
+  </section>
+</div>
+
+  <div class="card">
+  <h3>2. Cosine Similarity Computation</h3>
+  <p>
+    After gathering item co-occurrence data, we must determine how similar two items are — even if they were never bought together directly. Cosine similarity offers a robust way to measure this,
+    by comparing the direction of sparse co-purchase vectors instead of their magnitude.
+  </p>
+
+  <section class="decision-tree-section">
+    <h3>Data structure used:</h3>
+    <p>
+      Each item is modeled as a personality vector using:
+      <br>
+      <p style="text-align: center;">
+        <b>unordered_map&lt;int, int&gt;</b>
+      </p>
+    </p>
+    <b>Because:</b>
+    <ul>
+      <li>Sparse Representation: Only co-purchased items are stored, reducing space significantly.</li>
+      <li>Popularity Bias Mitigation: Cosine similarity normalizes for item frequency, helping prevent dominant items (like AirPods) from biasing results.</li>
+      <li>Interpretable: Intuitively reflects how similar two items are based on shared neighbors.</li>
+    </ul>
+
+    <h3>Time & Space Complexity:</h3>
+
+    <p><b>Time Complexity:</b></p>
+    <ul>
+      <li><code>O(min(|A|, |B|))</code> — Efficient because we only traverse keys present in both vectors.</li>
+    </ul>
+
+    <p><b>Space Complexity:</b></p>
+    <ul>
+      <li><code>O(k)</code> — where <code>k</code> is the number of co-purchased items per item vector.</li>
+    </ul>
+
+
+    <p>
+      This technique balances performance and precision, enabling discovery of related items based on contextual rather than absolute behavior. Ideal for personalized recommendations.
+    </p>
+  </section>
+</div>
+
+<div class="card">
+  <h3>3. Maintaining Top-K Similar Items</h3>
+  <p>
+    Computing all item-to-item similarities creates large outputs. Instead of storing everything, we only retain the top-K most similar items for each product using a min-heap.
+    This ensures we're only keeping what truly matters to the user.
+  </p>
+
+  <section class="decision-tree-section">
+    <h3>Data structure used:</h3>
+    <p>
+      A dynamic min-heap for each item using:
+      <br>
+      <p style="text-align: center;">
+        <b>priority_queue&lt;pair&lt;float, int&gt;, vector&lt;&gt;, greater&lt;&gt;&gt;</b>
+      </p>
+    </p>
+    <b>Because:</b>
+    <ul>
+      <li>Efficient Pruning: The least similar item is quickly discarded when a better match arrives.</li>
+      <li>Memory Controlled: Limits memory to only <code>K</code> entries per item.</li>
+      <li>Dynamic Adaptability: Suitable for streaming scenarios or periodic updates.</li>
+    </ul>
+
+    <h3>Time & Space Complexity:</h3>
+
+    <p><b>Time Complexity:</b></p>
+    <ul>
+      <li><code>O(log K)</code> per insert — maintains sorted top-K list efficiently.</li>
+    </ul>
+
+    <p><b>Space Complexity:</b></p>
+    <ul>
+      <li><code>O(K)</code> per item — bounded by number of neighbors retained.</li>
+    </ul>
+
+    <p style="text-align: right;">
+      🔗 <a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/min_heap.cpp" target="_blank" rel="noopener noreferrer">View Code</a>
+    </p>
+
+    <p>
+      This structure ensures that recommendations are both relevant and performant. Especially useful for user-facing applications where speed is critical.
+    </p>
+  </section>
+</div>
+
+<div class="card">
+  <h3>4. Final Recommendation Lookup</h3>
+  <p>
+    After offline computation of similarities and top-K filtering, the actual recommendation phase is a simple lookup. The user expects fast results,
+    and so we pre-index everything using a hash map.
+  </p>
+
+  <section class="decision-tree-section">
+    <h3>Data structure used:</h3>
+    <p>
+      A hash map of precomputed top-K items:
+      <br>
+      <p style="text-align: center;">
+        <b>unordered_map&lt;int, vector&lt;pair&lt;int, float&gt;&gt;&gt;</b>
+      </p>
+    </p>
+    <b>Because:</b>
+    <ul>
+      <li>Instant Retrieval: Allows direct lookup of similar items in <code>O(1)</code> time.</li>
+      <li>Precomputed Logic: Reduces recommendation latency to sub-millisecond range.</li>
+      <li>Scalable: Can handle millions of item queries per second with proper caching.</li>
+    </ul>
+
+    <h3>Time & Space Complexity:</h3>
+
+    <p><b>Time Complexity:</b></p>
+    <ul>
+      <li><code>O(1)</code> — simple hash table access per item ID.</li>
+    </ul>
+
+    <p><b>Space Complexity:</b></p>
+    <ul>
+      <li><code>O(n × K)</code> — where <code>n</code> is the total number of items, and <code>K</code> is the number of top similar items stored.</li>
+    </ul>
+
+    <p>
+      This design turns heavy batch computation into real-time action, enabling billions of recommendations per day with minimal delay. A core technique in modern recommender systems.
+    </p>
+  </section>
+</div>
+
 
   <section class="optimization-section">
     <h3>Optimization Strategies</h3>
