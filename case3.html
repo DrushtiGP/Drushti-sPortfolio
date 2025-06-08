@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buisiness Case 3</title>
+    <title>Amazon's Warehouse Optimization</title>
       <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -114,7 +114,7 @@ Amazon’s warehouse optimization system, powering its fleet of Kiva robots, exe
      <p><a href="https://github.com/DrushtiGP/Drushti-sPortfolio/blob/main/Dijakstra's_algo.cpp" target="_blank">🔗 View Code</a></p>
   </div>
 
-  <h1><span class="rocket">🚀</span>Advanced Algorithms & Techniques</h1>
+  <h1><span class="rocket"></span>Advanced Algorithms & Techniques</h1>
 
   <div class="card">
     <h2>1. Incremental Graph Search (e.g., D* Lite, LPA*)</h2>
@@ -126,6 +126,22 @@ Amazon’s warehouse optimization system, powering its fleet of Kiva robots, exe
         <li><strong>High Reusability:</strong> Updates only affected portions of the path</li>
         <li><strong>Ideal for Dynamic Environments:</strong> Great for live traffic or shifting obstacles</li>
       </ul>
+    </div>
+
+    <div class="image-wrapper">
+      <img src="D_lite.png" alt="Check membership" class="case-image" />
+      <p class="image-caption">Figure 1: D* Lite pathfinding</p>
+      <p class="image-courtesy">
+        Image courtesy: 
+        <a href="https://www.cs.cmu.edu/~ggordon/likhachev-etal.anytime-dstar.pdf" target="_blank" rel="noopener noreferrer">
+          likhachev-2005
+        </a>
+      </p>
+      <p>
+       A simple robot navigation scenario: the robot begins in the bottom-right cell and quickly plans a suboptimal path to reach the upper-left cell. It starts moving along this initial path, taking one step at a time while continuously refining the quality of its solution, represented by a gradually improving cost bound (ε). After covering two steps, the robot discovers a gap in the top wall — new information about the environment. The pathfinding algorithm seamlessly updates the current plan, efficiently incorporating this discovery to produce an improved path.
+        The shaded cells illustrate the states expanded during each of the first three stages of the robot’s journey.
+
+      </p>
     </div>
     <div class="complexity">
       <strong>Complexity:</strong><br>
@@ -145,6 +161,21 @@ Amazon’s warehouse optimization system, powering its fleet of Kiva robots, exe
         <li><strong>Works with Multiple Agents:</strong> Scales with fleet size</li>
       </ul>
     </div>
+    <div class="image-wrapper">
+  <img src="CBS.png" alt="CBS" class="case-image" style="width: 50%; height: auto;" />
+  <p class="image-caption">Figure 2: Conflict-Based Search</p>
+  <p class="image-courtesy">
+    Image courtesy: 
+    <a href="https://www.enjoyalgorithms.com/blog/bloom-filter" target="_blank" rel="noopener noreferrer">
+      wikipedia
+    </a>
+  </p>
+  <p>
+    An illustration of Conflict-Based Search (CBS), where multiple agents (represented by colored circles) plan non-colliding paths to their respective goals (stars) on a shared grid.
+     Each agent follows an optimized path while CBS resolves conflicts through hierarchical constraint handling.
+  </p>
+</div>
+
     <div class="complexity">
       <strong>Complexity:</strong><br>
       Time: Varies with problem size; exponential in worst case but manageable in practice<br>

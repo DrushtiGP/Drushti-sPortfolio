@@ -1,3 +1,9 @@
+html {
+  scroll-padding-top: 80px; /* Adjust this to match your navbar height */
+  scroll-behavior: smooth;
+}
+
+
 :root {
     --primary: #2C3E50;        /* Dark Blue-Gray */
     --secondary: #34495E;      /* Darker Slate Gray */
